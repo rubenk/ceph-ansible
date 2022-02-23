@@ -110,7 +110,7 @@ ansible_provision = proc do |ansible|
   end
 
   if DEBUG then
-    ansible.verbose = '-vvvv'
+    ansible.verbose = '-v'
   end
   ansible.limit = 'all'
 end
@@ -133,7 +133,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # "host doesn't support requested feature: CPUID.01H:EDX.ds [bit 21]"
   config.vm.provider :libvirt do |lv|
     lv.cpu_mode = 'host-passthrough'
-    lv.volume_cache = 'unsafe'
     lv.graphics_type = 'none'
     lv.cpus = 2
   end
@@ -207,7 +206,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       mon.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
 
       # Parallels
@@ -242,7 +241,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       grf.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
 
       # Parallels
@@ -277,7 +276,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       mgr.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
 
       # Parallels
@@ -313,7 +312,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       client.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
 
       # Parallels
@@ -349,7 +348,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       rgw.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
 
       # Parallels
@@ -385,7 +384,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       nfs.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
 
       # Parallels
@@ -420,7 +419,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       mds.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
       # Parallels
       mds.vm.provider "parallels" do |prl|
@@ -454,7 +453,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       rbd_mirror.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
       # Parallels
       rbd_mirror.vm.provider "parallels" do |prl|
@@ -488,7 +487,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       # Libvirt
       iscsi_gw.vm.provider :libvirt do |lv|
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
       # Parallels
       iscsi_gw.vm.provider "parallels" do |prl|
@@ -547,15 +546,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
 
       # Libvirt
-      driverletters = ('a'..'z').to_a
+      driverletters = ('b'..'z').to_a
       osd.vm.provider :libvirt do |lv|
         # always make /dev/sd{a/b/c} so that CI can ensure that
         # virtualbox and libvirt will have the same devices to use for OSDs
         (0..2).each do |d|
-          lv.storage :file, :device => "hd#{driverletters[d]}", :size => '50G', :bus => "ide"
+          lv.storage :file, :device => "vd#{driverletters[d]}", :size => '11G', :bus => "virtio", :serial => "#{LABEL_PREFIX}osd#{i}_id#{d}"
         end
         lv.memory = MEMORY
-        lv.random_hostname = true
+        lv.random_hostname = false
       end
 
       # Parallels

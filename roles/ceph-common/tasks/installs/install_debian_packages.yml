@@ -5,5 +5,6 @@
     update_cache: no
     state: "{{ (upgrade_ceph_packages|bool) | ternary('latest','present') }}"
     default_release: "{{ ceph_stable_release_uca | default('') if ceph_origin == 'repository' and ceph_repository == 'uca' else '' }}{{ ansible_facts['distribution_release'] ~ '-backports' if ceph_origin == 'distro' and ceph_use_distro_backports | bool else '' }}"
+    install_recommends: false
   register: result
   until: result is succeeded

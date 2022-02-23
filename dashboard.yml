@@ -86,7 +86,7 @@
 
 # using groups[] here otherwise it can't fallback to the mon if there's no mgr group.
 # adding an additional | default(omit) in case where no monitors are present (external ceph cluster)
-- hosts: "{{ groups[mgr_group_name] | default(groups[mon_group_name]) | default(omit) }}"
+- hosts: "{{ groups[mgr_group_name] | default(groups[mon_group_name], true) | default(omit, true) }}"
   gather_facts: false
   become: true
   pre_tasks:

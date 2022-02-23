@@ -69,7 +69,7 @@
         - name: set_fact subj_alt_names
           set_fact:
             subj_alt_names: >
-              {% for host in groups[mgr_group_name] | default(groups[mon_group_name]) -%}
+              {% for host in groups[mgr_group_name] | default(groups[mon_group_name], true) -%}
               DNS:{{ hostvars[host]['ansible_facts']['hostname'] }},DNS:{{ hostvars[host]['ansible_facts']['fqdn'] }},IP:{{ hostvars[host]['dashboard_server_addr'] }}{% if not loop.last %},{% endif %}
               {%- endfor -%}
 
